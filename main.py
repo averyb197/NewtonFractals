@@ -118,6 +118,7 @@ parser.add_argument("-r","--res", help="Resolution", type=int)
 parser.add_argument("-f", "--fov_size", help="Fov Size", type=float)
 parser.add_argument("-m", "--max_itera", default=50, help="Max Number of Iterations", type=int)
 parser.add_argument("-t", "--tol", default=1e-4, help="Tolerance", type=float)
+parser.add_argument("-s", "--split", default = True, type=bool, help="Use split to automatically split the .npy files into 100MB chunks, this is mainly because github has a max file size of 100MB, but generally this is not needed")
 parser.add_argument("-p", "--path", help="Filename to save to", type=str)
 args = parser.parse_args()
 
@@ -126,6 +127,7 @@ fov_size = args.fov_size
 max_iter = args.max_itera
 tol = args.tol
 path = args.path 
+splitq = args.split
 
 if res is not None and fov_size is not None and max_iter is not None and tol is not None and path is not None:
 	pass
@@ -139,7 +141,7 @@ frac = fractal(f, df, max_iter=max_iter, tol=tol, res=res, fov_size=fov_size)
 end = time.time()
 print(f"Time: {end-start} \n Resolution: {res} \n Tolerance: {tol}")
 
-from splitter import *
-
-splitter(frac, path)
+if splitq:
+	from splitter import *
+	splitter(frac, path)
 
